@@ -23,6 +23,6 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020061503;
-$plugin->requires  = 2020061500;    // Requires M3.9.
+$plugin->version   = 2021051703;
+$plugin->requires  = 2021051700;    // Requires Moodle 3.11.
 $plugin->component = 'assignfeedback_audio';

@@ -24,7 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$settings->add(new admin_setting_configcheckbox('assignfeedback_audio/default',
-        new lang_string('default', 'assignfeedback_audio'),
-        new lang_string('default_help', 'assignfeedback_audio'), 0)
-    );
+if ($ADMIN->fulltree) {
+    $settings->add(new admin_setting_configcheckbox('assignfeedback_audio/default',
+            new lang_string('default', 'assignfeedback_audio'),
+            new lang_string('default_help', 'assignfeedback_audio'), 0)
+        );
+}

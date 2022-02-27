@@ -32,21 +32,10 @@ defined('MOODLE_INTERNAL') || die();
  */
 class assign_feedback_audio extends assign_feedback_plugin {
 
-    /**
-     * Should return the name of this plugin type.
-     *
-     * @return string - the name
-     */
     public function get_name() {
         return get_string('pluginname', 'assignfeedback_audio');
     }
 
-    /**
-     * This function should be overridden to provide an array of elements that can be added to a moodle
-     * form for display in the settings page for the assignment.
-     * @param MoodleQuickForm $mform The form to add the elements to
-     * @return $array
-     */
     public function get_settings(MoodleQuickForm $mform) {
 
         $mform->addElement('duration', 'assignfeedback_audio_timeallowed', get_string('timeallowedprompt', 'assignfeedback_audio'),
@@ -54,7 +43,7 @@ class assign_feedback_audio extends assign_feedback_plugin {
                 'defaultunit' => MINSECS,
                 'units' => array(MINSECS)
             )
-        );
+            );
 
         $mform->addHelpButton('assignfeedback_audio_timeallowed', 'timeallowedprompt', 'assignfeedback_audio');
         $mform->setDefault('assignfeedback_audio_timeallowed', 1);
@@ -62,29 +51,11 @@ class assign_feedback_audio extends assign_feedback_plugin {
         $mform->hideIf('assignfeedback_audio_timeallowed', 'assignfeedback_audio_enabled', 'notchecked');
     }
 
-    /**
-     * The assignment subtype is responsible for saving it's own settings as the database table for the
-     * standard type cannot be modified.
-     *
-     * @param stdClass $data - the data submitted from the form
-     * @return bool - on error the subtype should call set_error and return false.
-     */
     public function save_settings(stdClass $data) {
         $this->set_config('duration', $data->assignfeedback_audio_timeallowed);
         return true;
     }
 
-    /**
-     * Get any additional fields for the submission/grading form for this assignment.
-     *
-     * @param mixed $grade submission|grade - For submission plugins this is the submission data,
-     *                                                    for feedback plugins it is the grade data
-     * @param MoodleQuickForm $mform - This is the form
-     * @param stdClass $data - This is the form data that can be modified for example by a filemanager element
-     * @param int $userid - This is the userid for the current submission.
-     *                      This is passed separately as there may not yet be a submission or grade.
-     * @return boolean - true if we added anything to the form
-     */
     public function get_form_elements_for_user($grade, MoodleQuickForm $mform, stdClass $data, $userid) {
         global $PAGE;
 
@@ -109,8 +80,8 @@ class assign_feedback_audio extends assign_feedback_plugin {
         }
 
         $mform->addElement('static', 'description', '', get_string('staticprompttext', 'assignfeedback_audio',
-                format_time($this->get_config('duration')))
-           );
+            format_time($this->get_config('duration')))
+            );
 
         $mform->addElement('html', \html_writer::div('', 'alert alert-danger feedbackinfoarea',
             array('style' => 'display: none', 'role' => 'alert')));
@@ -134,27 +105,12 @@ class assign_feedback_audio extends assign_feedback_plugin {
         return true;
     }
 
-    /**
-     * Has the plugin form element been modified in the current submission?
-     *
-     * @param stdClass $grade The grade.
-     * @param stdClass $data Form data from the feedback form.
-     * @return boolean - True if the form element has been modified.
-     */
+
     public function is_feedback_modified(stdClass $grade, stdClass $data) {
         // We know we have a change if the fileref is set.
         return (!empty($data->fileref));
     }
 
-    /**
-     * Save any custom data for this form submission
-     *
-     * @param stdClass $grade - assign_submission or assign_grade.
-     *              For submission plugins this is the submission data,
-     *              for feedback plugins it is the grade data
-     * @param stdClass $data - the data submitted from the form
-     * @return bool - on error the subtype should call set_error and return false.
-     */
     public function save(stdClass $grade, stdClass $data) {
         $contextid = $this->assignment->get_context()->id;
 
@@ -183,12 +139,6 @@ class assign_feedback_audio extends assign_feedback_plugin {
         return true;
     }
 
-    /**
-     * Get the required params for our recordings.
-     * @param int $gradeid - The grade id.
-     * @param boolean $includedirs - whether we need the sub folders.
-     * @return array
-     */
     private function getfileparams($gradeid, $includedirs = false) {
         return array(
             $this->assignment->get_context()->id,
@@ -199,23 +149,12 @@ class assign_feedback_audio extends assign_feedback_plugin {
             $includedirs);
     }
 
-    /**
-     * Is this assignment plugin empty? (ie no submission or feedback)
-     * @param stdClass $submissionorgrade assign_submission or assign_grade
-     * @return bool
-     */
     public function is_empty(stdClass $submissionorgrade) {
         $fs = get_file_storage();
         $fileparams = $this->getfileparams($submissionorgrade->id);
         return $fs->file_exists(...$fileparams);
     }
 
-    /**
-     * Render the audio controls.
-     * @param int $gradeid - the grade id.
-     * @param string $title - the title
-     * @return string - HTML snippet.
-     */
     private function render_audio_controls($gradeid, $title = '') {
 
         $content = '';
@@ -224,12 +163,12 @@ class assign_feedback_audio extends assign_feedback_plugin {
         if ($files = $fs->get_area_files(...$fileparams)) {
             if ($feedbackfile = array_pop($files)) {
                 $feedbackfileurl = \moodle_url::make_pluginfile_url(
-                        $feedbackfile->get_contextid(),
-                        $feedbackfile->get_component(),
-                        $feedbackfile->get_filearea(),
-                        $feedbackfile->get_itemid(),
-                        $feedbackfile->get_filepath(),
-                        $feedbackfile->get_filename()
+                    $feedbackfile->get_contextid(),
+                    $feedbackfile->get_component(),
+                    $feedbackfile->get_filearea(),
+                    $feedbackfile->get_itemid(),
+                    $feedbackfile->get_filepath(),
+                    $feedbackfile->get_filename()
                     );
 
                 // Audio player, could be a rendender.
@@ -248,14 +187,6 @@ class assign_feedback_audio extends assign_feedback_plugin {
         return $content;
     }
 
-    /**
-     * Should not output anything - return the result as a string so it can be consumed by webservices.
-     *
-     * @param stdClass $grade assign_submission or assign_grade
-     *                 For submission plugins this is the submission data, for feedback plugins it is the grade data
-     * @param bool $showviewlink Modifed to return whether or not to show a link to the full submission/feedback
-     * @return string - return a string representation of the submission in full
-     */
     public function view_summary(stdClass $grade, & $showviewlink) {
         return $this->render_audio_controls($grade->id);
     }

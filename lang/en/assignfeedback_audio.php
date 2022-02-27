@@ -26,10 +26,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Audio feedback';
-$string['default'] = 'Enabled by default';
-$string['default_help'] = 'If set, this feedback method will be enabled by default for all new assignments.';
 $string['enabled'] = 'Audio feedback';
 $string['enabled_help'] = 'If enabled, the tutor will be able to provide audio feedback ';
+
+$string['default'] = 'Enabled by default';
+$string['default_help'] = 'If set, this feedback method will be enabled by default for all new assignments.';
 
 $string['timeallowedprompt'] = 'Maximum recording time';
 $string['timeallowedprompt_help'] = 'The time limit for the feedback recording.';
@@ -46,7 +47,12 @@ $string['ok'] = 'OK';
 $string['startrecordingprompt'] = 'Record Feedback Audio';
 $string['listenrecordingprompt'] = 'Listen to recording';
 $string['removerecordingprompt'] = 'Remove recording';
-$string['staticprompttext'] = 'Maximum recording time is {$a}';
+$string['staticprompttext'] = 'Maximum recording time is {$a}';$string['pluginname'] = 'Audio feedback';
+
+$string['default'] = 'Enabled by default';
+$string['default_help'] = 'If set, this feedback method will be enabled by default for all new assignments.';
+$string['enabled'] = 'Audio feedback';
+$string['enabled_help'] = 'If enabled, the tutor will be able to provide audio feedback ';
 $string['stoprecordingprompt'] = 'Stop Recording';
 $string['stoplisteningprompt'] = 'Stop Listening';
 
@@ -58,4 +64,3 @@ $string['nocontextid'] = 'Context Id must be specified';
 $string['moodleerrormsg'] = '{$a}';
 
 $string['exisitingfeedbackprompt'] = 'Existing Audio Feedback';
-
